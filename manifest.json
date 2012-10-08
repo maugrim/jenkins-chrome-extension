@@ -4,7 +4,9 @@
     "description": "This Extensions monitors Jenkins.",
     "icons": { "128": "images/icon128.png" },
     "options_page": "options.html",
-    "background_page": "background.html",
+    "background": {
+        "page": "background.html"
+    },
     "browser_action": {
        "default_icon": "images/icon.png",
        "default_title": "Jenkins"
