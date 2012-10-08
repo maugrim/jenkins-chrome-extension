@@ -1,5 +1,5 @@
 jenkins.options = function(conf) {
-    var jenkinsUrlTextbox, pollIntervallTextbox, saveButton, saveStatus, iconSize;
+    var jenkinsUrlTextbox, pollIntervallTextbox, cancelButton, saveButton, saveStatus, iconSize;
 
     function showSaveStatus(show) {
         saveStatus.style.display = show ? '' : "none";
@@ -49,18 +49,38 @@ jenkins.options = function(conf) {
             chrome.extension.getBackgroundPage().jenkins.init();
         },
 
-        markDirty : function () {
-            showSaveStatus(false);
-        },
-
-
         init : function () {
             jenkinsUrlTextbox = document.getElementById("jenkins-url");
             pollIntervallTextbox = document.getElementById("poll-intervall");
+            cancelButton = document.getElementById("cancel-button");
             saveButton = document.getElementById("save-button");
             saveStatus = document.getElementById("save-status");
+
+            cancelButton.addEventListener("click", jenkins.options.init);
+            saveButton.addEventListener("click", jenkins.options.save);
+
+            var inputs = [document.getElementById("jenkins-url"), document.getElementById("poll-intervall")];
+            var radios = [
+                document.optionForm.small,
+                document.optionForm.medium,
+                document.optionForm.large,
+                document.optionForm.blue,
+                document.optionForm.green
+            ];
+
+            var markDirty = function () { showSaveStatus(false); };
+
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener("input", markDirty);
+            }
+
+            for (var j = 0; j < radios.length; j++) {
+                radios[j].addEventListener("change", markDirty);
+            }
+
             display();
         }
     };
 }(jenkins.conf);
 
+document.addEventListener("DOMContentLoaded", jenkins.options.init);

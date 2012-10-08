@@ -110,3 +110,5 @@ jenkins.init = function (conf, results) {
     };
 
 }(jenkins.conf, jenkins.results);
+
+document.addEventListener("DOMContentLoaded", jenkins.init);

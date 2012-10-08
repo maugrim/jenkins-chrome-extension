@@ -85,13 +85,11 @@ jenkins.status = function(conf) {
             var list = createList(jenkins.results.jenkins.jobs);
             content.appendChild(list);
         }
-        
+
         lastUpdate.innerText = "Last Update: " + timeSince(jenkins.results.lastUpdate);
         options.appendChild(lastUpdate);
         options.appendChild(link(chrome.extension.getURL('options.html'), 'Options'));
     }}
 }(jenkins.conf);
 
-window.onload = function() {
-	jenkins.status.show();
-};
+document.addEventListener("DOMContentLoaded", jenkins.status.show);
