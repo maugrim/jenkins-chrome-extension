@@ -38,6 +38,7 @@ jenkins.init = function (conf, results) {
         chrome.browserAction.setBadgeText({ text:  state.msg });
         chrome.browserAction.setBadgeBackgroundColor({ color:  state.color });
         chrome.browserAction.setTitle({ title : msg +"\nRight click for options" });
+        chrome.browserAction.setPopup({ popup : "status.html" });
     }
 
     function onerror(msg) {
