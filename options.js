@@ -12,10 +12,6 @@ jenkins.options = function(conf) {
 		document.getElementById(conf.iconSize()).checked = true;
 		document.getElementById(conf.successColor()).checked = true;
         saveButton.disabled = true;
-		var checks = document.getElementById('checks');
-		checks.innerHTML = "";
-		var checkedArray = conf.ignoreList().split(",");
-		checks.appendChild(getListOfJobs(checkedArray));
     }
 
 	function getIconSize() {
