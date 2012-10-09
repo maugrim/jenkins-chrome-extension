@@ -28,9 +28,13 @@ jenkins.init = function (conf, results) {
         timeoutId = undefined,
         successColors = /(blue|grey|disabled)/,
         build = {
-            ok:      {  msg : "OK",     color : [0, 128, 0, 255] },
-            failed:  {  msg : "Fail",   color : [255, 0, 0, 255] },
-            unknown: {  msg : "?",      color : [128, 128, 128, 255] }
+            unknown: { msg : "?", color: [128, 128, 128, 255] },
+            ok: function(nSuccesses, nTotal) {
+                return { msg: nTotal, color: [0, 128, 0, 255] };
+            },
+            failed: function(nSuccesses, nTotal) {
+                return { msg: "-" + (nTotal - nSuccesses), color: [255, 0, 0, 255] }
+            }
         };
 
     function setState(state, msg) {
@@ -47,10 +51,14 @@ jenkins.init = function (conf, results) {
         setState(build.unknown, msg);
     }
 
-    function isSuccess(jobs) {
-        return jobs.every(function (job) {
-            return successColors.test(job.color);
-        });
+    function successes(jobs) {
+        var n = 0;
+        for (var i = 0; i < jobs.length; i++) {
+            if (successColors.test(jobs[i].color)) {
+                n++;
+            }
+        }
+        return n;
     }
 
     function timeout() {
@@ -98,10 +106,12 @@ jenkins.init = function (conf, results) {
             return;
         }
         results.error = undefined;
-        if (isSuccess(results.jenkins.jobs)) {
-            setState(build.ok, "Build OK");
+        var nTotal = results.jenkins.jobs.length;
+        var nSuccesses = successes(results.jenkins.jobs);
+        if (nTotal === nSuccesses) {
+            setState(build.ok(nSuccesses, nTotal), "Build OK");
         } else {
-            setState(build.failed, "Build Failed!");
+            setState(build.failed(nSuccesses, nTotal), "Build Failed!");
         }
     }
 
