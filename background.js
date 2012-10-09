@@ -70,7 +70,7 @@ jenkins.init = function (conf, results) {
     }
 
     function newRequest() {
-        window.setTimeout(start, 60 * 1000 * conf.pollIntervall());
+        window.setTimeout(start, 60 * 1000 * conf.pollInterval());
     }
 
     function start() {
