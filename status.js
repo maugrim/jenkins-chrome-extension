@@ -43,12 +43,14 @@ jenkins.status = function(conf) {
 
     function createList(jobs) {
         var list = document.createElement('table');
+        list.className = "jobs";
         jobs.forEach(function(r) {
             var tr = document.createElement('tr'),
             tdIcon = document.createElement('td'),
             tdName = document.createElement('td');
             tr.className = "feedList";
             tdIcon.appendChild(asIcon(r));
+            tdIcon.className = "ball";
             tdName.appendChild(link(r.url, r.name));
             tdName.className = conf.iconSize();
             tr.appendChild(tdIcon);
@@ -67,7 +69,7 @@ jenkins.status = function(conf) {
     return { show : function () {
         var jenkins = chrome.extension.getBackgroundPage().jenkins,
             options = document.getElementById('options'),
-            lastUpdate = document.createElement('div'),
+            lastUpdate = document.getElementById('lastUpdate'),
             content = document.getElementById('content'),
             heading = document.getElementById('heading'),
             url = document.createElement('div');
@@ -87,7 +89,6 @@ jenkins.status = function(conf) {
         }
 
         lastUpdate.innerText = "Last update: " + timeSince(jenkins.results.lastUpdate);
-        options.appendChild(lastUpdate);
         options.appendChild(link(chrome.extension.getURL('options.html'), 'Options'));
     }}
 }(jenkins.conf);
