@@ -26,14 +26,15 @@ jenkins.open = function() {
 jenkins.init = function (conf, results) {
     var xhr = undefined,
         timeoutId = undefined,
-        successColors = /(blue|grey|disabled)/,
+        successColors = /blue/,
+        unknownColors = /(grey|disabled)/,
         build = {
             unknown: { msg : "?", color: [128, 128, 128, 255] },
-            ok: function(nSuccesses, nTotal) {
-                return { msg: nTotal, color: [0, 128, 0, 255] };
+            ok: function(nSuccesses) {
+                return { msg: "+" + nSuccesses, color: [0, 128, 0, 255] };
             },
-            failed: function(nSuccesses, nTotal) {
-                return { msg: "-" + (nTotal - nSuccesses), color: [255, 0, 0, 255] }
+            failed: function(nFailures) {
+                return { msg: "-" + nFailures, color: [255, 0, 0, 255] }
             }
         };
 
@@ -49,16 +50,6 @@ jenkins.init = function (conf, results) {
         console.log(msg);
         results.error = msg;
         setState(build.unknown, msg);
-    }
-
-    function successes(jobs) {
-        var n = 0;
-        for (var i = 0; i < jobs.length; i++) {
-            if (successColors.test(jobs[i].color)) {
-                n++;
-            }
-        }
-        return n;
     }
 
     function timeout() {
@@ -107,11 +98,20 @@ jenkins.init = function (conf, results) {
         }
         results.error = undefined;
         var nTotal = results.jenkins.jobs.length;
-        var nSuccesses = successes(results.jenkins.jobs);
-        if (nTotal === nSuccesses) {
-            setState(build.ok(nSuccesses, nTotal), "Build OK");
+        var nSuccesses = 0, nUnknown = 0;
+        for (var i = 0; i < nTotal; i++) {
+            if (successColors.test(results.jenkins.jobs[i].color)) {
+                nSuccesses++;
+            } else if (unknownColors.test(results.jenkins.jobs[i].color)) {
+                nUnknown++;
+            }
+        }
+        var nFailures = nTotal - (nSuccesses + nUnknown);
+
+        if (nTotal === nSuccesses + nUnknown) {
+            setState(build.ok(nSuccesses), "Build OK");
         } else {
-            setState(build.failed(nSuccesses, nTotal), "Build Failed!");
+            setState(build.failed(nFailures), "Build Failed!");
         }
     }
 
