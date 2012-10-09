@@ -1,7 +1,7 @@
 var jenkins = jenkins || {};
 
 jenkins.status = function(conf) {
-    
+
     function showUrl(evt) {
         var url = evt.currentTarget.href,
             jenkins = chrome.extension.getBackgroundPage().jenkins;
@@ -10,33 +10,33 @@ jenkins.status = function(conf) {
     }
 
     function link(url, name) {
-        if (name == undefined) {
+        if (name === undefined) {
             name = url;
         }
-        var link = document.createElement('a');
-        link.innerText = name;
-        link.href = url;
-        link.addEventListener("click", showUrl);
-        return link;
+        var anchor = document.createElement('a');
+        anchor.innerText = name;
+        anchor.href = url;
+        anchor.addEventListener("click", showUrl);
+        return anchor;
     }
 
     function asIcon(result) {
         var icon = document.createElement('img'),
             name = result.color,
-			extension = ".png";
+            extension = ".png";
         if (name === 'aborted' || name === 'disabled') {
             name = 'grey';
         }
-		if (name == 'blue') {
-			name = conf.successColor();
-		}
-		if (name == 'blue_anime') {
-			name = conf.successColor() + "_anime";
-		}
-		if (name.search("anime") >= 0) {
-			extension = ".gif";
-		}
-		var size = conf.iconSize();
+        if (name === 'blue') {
+            name = conf.successColor();
+        }
+        if (name === 'blue_anime') {
+            name = conf.successColor() + "_anime";
+        }
+        if (name.search("anime") >= 0) {
+            extension = ".gif";
+        }
+        var size = conf.iconSize();
         icon.src = "images/" + size + "/" + name + extension;
         return icon;
     }
@@ -44,13 +44,13 @@ jenkins.status = function(conf) {
     function createList(jobs) {
         var list = document.createElement('table');
         jobs.forEach(function(r) {
-            var tr = document.createElement('tr'), 
-                tdIcon = document.createElement('td'),
-                tdName = document.createElement('td');
+            var tr = document.createElement('tr'),
+            tdIcon = document.createElement('td'),
+            tdName = document.createElement('td');
             tr.className = "feedList";
             tdIcon.appendChild(asIcon(r));
             tdName.appendChild(link(r.url, r.name));
-			tdName.className = conf.iconSize();
+            tdName.className = conf.iconSize();
             tr.appendChild(tdIcon);
             tr.appendChild(tdName);
             list.appendChild(tr);
@@ -65,13 +65,13 @@ jenkins.status = function(conf) {
     }
 
     return { show : function () {
-        var jenkins = chrome.extension.getBackgroundPage().jenkins, 
-            options = document.getElementById('options'), 
-            lastUpdate = document.createElement('div'), 
+        var jenkins = chrome.extension.getBackgroundPage().jenkins,
+            options = document.getElementById('options'),
+            lastUpdate = document.createElement('div'),
             content = document.getElementById('content'),
             heading = document.getElementById('heading'),
             url = document.createElement('div');
-        
+
         heading.innerText = "Jenkins Status ";
         url.className = 'url';
         url.appendChild(link(jenkins.conf.jenkinsURL()));
@@ -79,7 +79,7 @@ jenkins.status = function(conf) {
         if (jenkins.results.error) {
             var err = document.createElement('div');
             err.className = 'error';
-            err.innerText = jenkins.results.error
+            err.innerText = jenkins.results.error;
             content.appendChild(err);
         } else {
             var list = createList(jenkins.results.jenkins.jobs);

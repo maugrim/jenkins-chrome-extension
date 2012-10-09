@@ -9,36 +9,36 @@ jenkins.options = function(conf) {
     function display() {
         jenkinsUrlTextbox.value = conf.jenkinsURL();
         pollIntervallTextbox.value = conf.pollIntervall();
-		document.getElementById(conf.iconSize()).checked = true;
-		document.getElementById(conf.successColor()).checked = true;
+        document.getElementById(conf.iconSize()).checked = true;
+        document.getElementById(conf.successColor()).checked = true;
         saveButton.disabled = true;
     }
 
-	function getIconSize() {
-		if (document.optionForm.small.checked) {
-			return document.optionForm.small.value;
-		} if (document.optionForm.medium.checked) {
-			return document.optionForm.medium.value;
-		} if (document.optionForm.large.checked) {
-			return document.optionForm.large.value;
-		}
-	}
-	
-	function getSuccessColor() {
-		if (document.optionForm.blue.checked) {
-			return document.optionForm.blue.value;
-		} if (document.optionForm.green.checked) {
-			return document.optionForm.green.value;
-		}
-	}
+    function getIconSize() {
+        if (document.optionForm.small.checked) {
+            return document.optionForm.small.value;
+        } else if (document.optionForm.medium.checked) {
+            return document.optionForm.medium.value;
+        } else if (document.optionForm.large.checked) {
+            return document.optionForm.large.value;
+        }
+    }
 
-    return { 
+    function getSuccessColor() {
+        if (document.optionForm.blue.checked) {
+            return document.optionForm.blue.value;
+        } else if (document.optionForm.green.checked) {
+            return document.optionForm.green.value;
+        }
+    }
+
+    return {
         save : function () {
-            conf.set({ 
+            conf.set({
                 jenkinsURL : jenkinsUrlTextbox.value,
                 pollIntervall: pollIntervallTextbox.value,
-				iconSize: getIconSize(),
-				successColor: getSuccessColor()
+                iconSize: getIconSize(),
+                successColor: getSuccessColor()
             });
             showSaveStatus(true);
             display();

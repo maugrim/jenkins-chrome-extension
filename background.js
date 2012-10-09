@@ -5,9 +5,9 @@ jenkins.open = function() {
     function sameUrl(orig, other) {
         if (other.indexOf(orig) !== 0)
             return false;
-        return other.length == orig.length ||
-            other[orig.length] == '?' ||
-            other[orig.length] == '#';
+        return other.length === orig.length ||
+            other[orig.length] === '?' ||
+            other[orig.length] === '#';
     }
 
     return function (url) {
@@ -28,8 +28,8 @@ jenkins.init = function (conf, results) {
         timeoutId = undefined,
         successColors = /(blue|grey|disabled)/,
         build = {
-            ok :   {    msg : "OK",     color : [0, 128, 0, 255] },
-            failed : {  msg : "Fail",   color : [255, 0, 0, 255] },
+            ok:      {  msg : "OK",     color : [0, 128, 0, 255] },
+            failed:  {  msg : "Fail",   color : [255, 0, 0, 255] },
             unknown: {  msg : "?",      color : [128, 128, 128, 255] }
         };
 
@@ -53,7 +53,7 @@ jenkins.init = function (conf, results) {
         });
     }
 
-    function timeout () {
+    function timeout() {
         console.log("timeout");
         if (xhr) {
             xhr.abort();
@@ -77,12 +77,12 @@ jenkins.init = function (conf, results) {
         }
     }
 
-    function onchange () {
-        if (xhr.readyState != 4) return;
+    function onchange() {
+        if (xhr.readyState !== 4) return;
         results.lastUpdate = new Date();
         console.log("onchange", xhr);
         window.clearTimeout(timeoutId);
-        if (xhr.status != 200) {
+        if (xhr.status !== 200) {
             onerror("Failed to load data: " + xhr.statusText +  " (" + xhr.status + ")");
         } else {
             display(xhr.responseText);
