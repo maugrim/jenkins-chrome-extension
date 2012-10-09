@@ -102,7 +102,7 @@ jenkins.init = function (conf, results) {
         try {
             results.jenkins = JSON.parse(text);
         } catch (e) {
-            onerror("Failed to parse JSON data from " + conf.jenkinsUrl() + ": " + e);
+            onerror("Failed to parse JSON data from " + conf.jenkinsURL() + ": " + e);
             return;
         }
         results.error = undefined;
