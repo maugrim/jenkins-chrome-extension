@@ -61,7 +61,7 @@ jenkins.status = function(conf) {
     function timeSince(d) {
         var now = new Date(),
             minutes = Math.round((now.getTime() - d.getTime()) / (1000 * 60));
-        return d.toLocaleTimeString() +  " (" + minutes + " minutes ago)";
+        return d.toLocaleTimeString() +  " (" + minutes + " minute(s) ago)";
     }
 
     return { show : function () {
@@ -72,7 +72,7 @@ jenkins.status = function(conf) {
             heading = document.getElementById('heading'),
             url = document.createElement('div');
 
-        heading.innerText = "Jenkins Status ";
+        heading.innerText = "Jenkins status ";
         url.className = 'url';
         url.appendChild(link(jenkins.conf.jenkinsURL()));
         content.appendChild(url);
@@ -86,7 +86,7 @@ jenkins.status = function(conf) {
             content.appendChild(list);
         }
 
-        lastUpdate.innerText = "Last Update: " + timeSince(jenkins.results.lastUpdate);
+        lastUpdate.innerText = "Last update: " + timeSince(jenkins.results.lastUpdate);
         options.appendChild(lastUpdate);
         options.appendChild(link(chrome.extension.getURL('options.html'), 'Options'));
     }}

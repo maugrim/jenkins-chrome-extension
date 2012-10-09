@@ -1,5 +1,5 @@
 jenkins.options = function(conf) {
-    var jenkinsUrlTextbox, pollIntervallTextbox, cancelButton, saveButton, saveStatus, iconSize;
+    var jenkinsUrlTextbox, pollIntervalTextbox, cancelButton, saveButton, saveStatus, iconSize;
 
     function showSaveStatus(show) {
         saveStatus.style.display = show ? '' : "none";
@@ -8,7 +8,7 @@ jenkins.options = function(conf) {
 
     function display() {
         jenkinsUrlTextbox.value = conf.jenkinsURL();
-        pollIntervallTextbox.value = conf.pollIntervall();
+        pollIntervalTextbox.value = conf.pollInterval();
         document.getElementById(conf.iconSize()).checked = true;
         document.getElementById(conf.successColor()).checked = true;
         saveButton.disabled = true;
@@ -36,7 +36,7 @@ jenkins.options = function(conf) {
         save : function () {
             conf.set({
                 jenkinsURL : jenkinsUrlTextbox.value,
-                pollIntervall: pollIntervallTextbox.value,
+                pollInterval: pollIntervalTextbox.value,
                 iconSize: getIconSize(),
                 successColor: getSuccessColor()
             });
@@ -47,7 +47,7 @@ jenkins.options = function(conf) {
 
         init : function () {
             jenkinsUrlTextbox = document.getElementById("jenkins-url");
-            pollIntervallTextbox = document.getElementById("poll-intervall");
+            pollIntervalTextbox = document.getElementById("poll-interval");
             cancelButton = document.getElementById("cancel-button");
             saveButton = document.getElementById("save-button");
             saveStatus = document.getElementById("save-status");
@@ -55,7 +55,7 @@ jenkins.options = function(conf) {
             cancelButton.addEventListener("click", jenkins.options.init);
             saveButton.addEventListener("click", jenkins.options.save);
 
-            var inputs = [document.getElementById("jenkins-url"), document.getElementById("poll-intervall")];
+            var inputs = [document.getElementById("jenkins-url"), document.getElementById("poll-interval")];
             var radios = [
                 document.optionForm.small,
                 document.optionForm.medium,

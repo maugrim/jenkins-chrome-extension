@@ -1,12 +1,12 @@
 var jenkins = jenkins || {};
 jenkins.conf = function () {
     var default_url = "http://ci.jenkins-ci.org/",
-    default_pollIntervall = 10;
+    default_pollInterval = 10;
 
-    function setPollIntervall(minutes) {
-        var pollIntervall = parseInt(minutes);
-        if (0 < pollIntervall && pollIntervall < (24 * 60)) {
-            localStorage.pollIntervall = pollIntervall;
+    function setPollInterval(minutes) {
+        var pollInterval = parseInt(minutes);
+        if (0 < pollInterval && pollInterval < (24 * 60)) {
+            localStorage.pollInterval = pollInterval;
         }
     }
 
@@ -36,12 +36,12 @@ jenkins.conf = function () {
     }
 
     return {
-        pollIntervall : get('pollIntervall', default_pollIntervall),
+        pollInterval : get('pollInterval', default_pollInterval),
         jenkinsURL : get('jenkinsUrl', default_url),
 	iconSize: get('iconSize', "medium"),
 	successColor: get('successColor', "blue"),
         set : function (values) {
-            setPollIntervall(values.pollIntervall);
+            setPollInterval(values.pollInterval);
             setJenkinsURL(values.jenkinsURL);
 	    setIconSize(values.iconSize);
 	    setSuccessColor(values.successColor);

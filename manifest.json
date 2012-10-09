@@ -2,7 +2,7 @@
     "name": "Jenkins Extension",
     "manifest_version": 2,
     "version": "0.9.4",
-    "description": "This Extensions monitors Jenkins.",
+    "description": "This extension monitors Jenkins.",
     "icons": { "128": "images/icon128.png" },
     "options_page": "options.html",
     "background": {
