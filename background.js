@@ -52,25 +52,14 @@ jenkins.init = function (conf, results) {
         setState(build.unknown, msg);
     }
 
-    function timeout() {
-        console.log("timeout");
-        if (xhr) {
+    function request() {
+        if (xhr)
             xhr.abort();
-        }
-        newRequest();
-    }
-
-    function newRequest() {
-        window.setTimeout(start, 60 * 1000 * conf.pollInterval());
-    }
-
-    function start() {
         xhr = new XMLHttpRequest();
         xhr.onreadystatechange = onchange;
         xhr.open("GET", conf.apiURL(), true);
         try {
             xhr.send("");
-            timeoutId = window.setTimeout(timeout, 10 * 1000);
         } catch (err) {
             console.log(err);
         }
@@ -80,13 +69,12 @@ jenkins.init = function (conf, results) {
         if (xhr.readyState !== 4) return;
         results.lastUpdate = new Date();
         console.log("onchange", xhr);
-        window.clearTimeout(timeoutId);
         if (xhr.status !== 200) {
             onerror("Failed to load data: " + xhr.statusText +  " (" + xhr.status + ")");
         } else {
             display(xhr.responseText);
         }
-        newRequest();
+        xhr = null;
     }
 
     function display(text) {
@@ -117,7 +105,8 @@ jenkins.init = function (conf, results) {
 
     return function () {
         setState(build.unknown, "Build status unknown");
-        start();
+        request()
+        window.setInterval(request, 60 * 1000 * conf.pollInterval());
     };
 
 }(jenkins.conf, jenkins.results);
